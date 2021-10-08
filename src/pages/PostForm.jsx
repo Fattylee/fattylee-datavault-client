@@ -25,14 +25,12 @@ export const PostForm = ({ history }) => {
 
   function submitPost(e) {
     e.preventDefault();
-    // addNewPost();
     setLoading(true);
     APIClient.post("/posts", { message: value.message })
       .then(() => {
         setError({});
         setValue(initialValue);
-
-        history.push("/");
+        // refresh post
       })
       .catch((error) => {
         console.log("error", error.message);
