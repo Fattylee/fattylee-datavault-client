@@ -1,26 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Container } from "semantic-ui-react";
 
-function App() {
+import { Header } from "./components/Header";
+import { AuthProvider } from "./context/auth";
+import { AuthRoute } from "./context/AuthRoute";
+import { Home } from "./pages/Home";
+import { Login } from "./pages/Login";
+import { NotFound } from "./pages/NotFound";
+import { Register } from "./pages/Register";
+import { FormProvider } from "./context/postForm";
+import { UIContextProvider } from "./context/uiContext";
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <UIContextProvider>
+      <AuthProvider>
+        <FormProvider>
+          <Router>
+            <Container>
+              <Header />
+              <Switch>
+                <Route exact path="/" component={Home} />
+                <AuthRoute exact path="/login" component={Login} />
+                <AuthRoute exact path="/register" component={Register} />
+                <Route component={NotFound} />
+              </Switch>
+            </Container>
+          </Router>
+        </FormProvider>
+      </AuthProvider>
+    </UIContextProvider>
   );
-}
+};
 
 export default App;
