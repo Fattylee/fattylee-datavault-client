@@ -8,7 +8,6 @@ const initialValue = {
   firstName: "",
   lastName: "",
   password: "",
-  confirm_password: "",
   email: "",
 };
 
@@ -16,7 +15,6 @@ export const Register = (props) => {
   const { error, setError, value, setValue, handleSubmit, handleInput } =
     useForm(initialValue, handleRegisterUser);
   const [togglePassword, setTogglePassword] = useState(false);
-  const [toggleConfirmPassword, setToggleConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
   function handleRegisterUser() {
@@ -28,8 +26,6 @@ export const Register = (props) => {
       lastName: value.lastName,
     })
       .then(() => {
-        setError({});
-        setValue(initialValue);
         props.history.push("/login");
       })
       .catch((error) => {

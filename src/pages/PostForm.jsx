@@ -7,7 +7,7 @@ const initialValue = {
   message: "",
 };
 
-export const PostForm = ({ history }) => {
+export const PostForm = ({ history, refresh }) => {
   const { setError, error, setValue, value, handleInput } =
     useContext(FormContext);
 
@@ -31,6 +31,7 @@ export const PostForm = ({ history }) => {
         setError({});
         setValue(initialValue);
         // refresh post
+        refresh([]);
       })
       .catch((error) => {
         console.log("error", error.message);
@@ -77,13 +78,3 @@ export const PostForm = ({ history }) => {
     </Form>
   );
 };
-
-function focusAndBlink(value) {
-  const updatedPost = document.getElementById(value.id);
-  updatedPost?.querySelector("button")?.focus();
-  updatedPost?.classList.add("my-flash");
-  setTimeout(() => {
-    // remove animation after 3s
-    updatedPost?.classList.remove("my-flash");
-  }, 3000);
-}

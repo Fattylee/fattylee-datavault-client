@@ -4,11 +4,10 @@ import moment from "moment";
 export const Post = ({
   post: {
     _id: id,
-    message: body,
-    owner: { firstName: username },
+    message,
+    owner: { firstName },
     createdAt,
   },
-  history,
 }) => {
   return (
     <Card fluid id={id}>
@@ -18,10 +17,10 @@ export const Post = ({
           size="mini"
           src="assets/img/avatar-datavault.jpg"
         />
-        <Card.Header>{username}</Card.Header>
+        <Card.Header className="text-capitalize">{firstName}</Card.Header>
         <Card.Meta>{moment(createdAt).fromNow(true)}</Card.Meta>
 
-        <Card.Description>{body}</Card.Description>
+        <Card.Description>{message}</Card.Description>
       </Card.Content>
     </Card>
   );

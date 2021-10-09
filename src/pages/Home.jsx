@@ -14,6 +14,8 @@ export const Home = (props) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const [refresh, setRefresh] = useState([]);
+
   useEffect(() => {
     APIClient.get("/posts")
       .then((res) => {
@@ -29,7 +31,7 @@ export const Home = (props) => {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [refresh]);
 
   if (error) return <h1>Error page</h1>;
   return (
@@ -42,7 +44,7 @@ export const Home = (props) => {
         {isAuthenticated && (
           <Grid.Column style={{ marginBottom: 20 }}>
             {" "}
-            <PostForm {...props} />{" "}
+            <PostForm refresh={setRefresh} {...props} />{" "}
           </Grid.Column>
         )}
         {loading ? (

@@ -8,6 +8,9 @@
   margin: auto;
 }
 
+.text-capitalize {
+  text-transform: capitalize;
+}
 .gutterBottom {
   margin-bottom: 2rem !important;
 }
