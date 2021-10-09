@@ -27,12 +27,9 @@ export const Register = (props) => {
       firstName: value.firstName,
       lastName: value.lastName,
     })
-      .then((res) => {
-        const { data } = res;
-        console.log({ data });
+      .then(() => {
         setError({});
         setValue(initialValue);
-        // context.login(data);
         props.history.push("/login");
       })
       .catch((error) => {
@@ -126,25 +123,7 @@ export const Register = (props) => {
                   label="Password"
                   required={!!error.password}
                 />
-                <Form.Input
-                  type={toggleConfirmPassword ? "text" : "password"}
-                  name="confirm_password"
-                  placeholder="Confiirm password"
-                  icon={
-                    <Icon
-                      link
-                      name={toggleConfirmPassword ? "eye" : "eye slash"}
-                      onClick={(e) =>
-                        setToggleConfirmPassword(!toggleConfirmPassword)
-                      }
-                    />
-                  }
-                  error={error.confirm_password}
-                  onChange={handleInput}
-                  value={value.confirm_password}
-                  label="Confirm password"
-                  required={!!error.confirm_password}
-                />
+
                 <Form.Button
                   content="Submit"
                   fluid
