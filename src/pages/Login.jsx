@@ -1,7 +1,7 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Card, Form, Grid, Header, Icon, Message } from "semantic-ui-react";
-import { AuthContext } from "../context/auth";
+import { useAuthState } from "../context/auth";
 import { APIClient } from "../utils/APIClient";
 
 import { useForm } from "../utils/hooks";
@@ -16,7 +16,7 @@ export const Login = (props) => {
     useForm(initialValue, handleLoginUser);
   const [togglePassword, setTogglePassword] = useState(false);
 
-  const context = useContext(AuthContext);
+  const context = useAuthState();
   const [loading, setLoading] = useState(false);
 
   function handleLoginUser() {

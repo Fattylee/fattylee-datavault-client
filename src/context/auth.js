@@ -1,56 +1,71 @@
-import { decode } from "jsonwebtoken";
 import { createContext, useEffect, useReducer } from "react";
+import { APIClient } from "../utils/APIClient";
+import { useContext } from "react";
 
 const AuthContext = createContext({
+  isAuthenticated: false,
+  loading: true,
   user: null,
   login: (userData) => null,
   logout: () => null,
 });
 
-const reducer = (state, action) => {
+const reducer = (
+  state = { user: null, loading: true, isAuthenticated: false },
+  action
+) => {
   switch (action.type) {
     case "LOGIN":
-      return { ...state, user: action.payload };
+      return {
+        ...state,
+        loading: false,
+        isAuthenticated: true,
+        user: action.payload,
+      };
     case "LOGOUT":
-      return { ...state, user: null };
+      return { ...state, loading: false, isAuthenticated: false, user: null };
     default:
       return state;
   }
 };
 
 const getInitialState = () => {
-  const initialState = { user: null };
-  const token = localStorage.getItem("jwtToken");
-  if (token) {
-    const decodedToken = decode(token);
-    if (!decodedToken) {
-      return initialState;
-    }
-    console.log({ decodedToken, now: Date.now() / 1000 });
-    if (decodedToken.exp * 1000 < Date.now()) {
-      localStorage.removeItem("jwtToken");
-    } else {
-      initialState.user = decodedToken;
-    }
-  }
+  const initialState = { user: null, loading: true, isAuthenticated: false };
+
   return initialState;
 };
 
 const AuthProvider = (props) => {
-  const [{ user }, dispatch] = useReducer(reducer, null, getInitialState);
-
-  useEffect(() => {
-    if (user) {
-      localStorage.setItem("jwtToken", user.token);
-    } else {
-      localStorage.removeItem("jwtToken");
-    }
-  }, [user]);
+  const [{ user, isAuthenticated, loading }, dispatch] = useReducer(
+    reducer,
+    null,
+    getInitialState
+  );
 
   const login = (userData) => dispatch({ type: "LOGIN", payload: userData });
   const logout = () => dispatch({ type: "LOGOUT" });
 
-  return <AuthContext.Provider value={{ login, logout, user }} {...props} />;
+  useEffect(() => {
+    APIClient.get("/auth/me")
+      .then(({ data }) => {
+        console.log({ data });
+        login(data);
+      })
+      .catch((error) => {
+        console.error(error);
+        logout();
+      })
+      .finally(() => {});
+  }, []);
+
+  return (
+    <AuthContext.Provider
+      value={{ login, logout, user, isAuthenticated, loading }}
+      {...props}
+    />
+  );
 };
 
-export { AuthContext, AuthProvider };
+const useAuthState = () => useContext(AuthContext);
+
+export { useAuthState, AuthProvider };

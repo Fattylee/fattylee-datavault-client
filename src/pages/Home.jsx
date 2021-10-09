@@ -1,14 +1,14 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Grid, Loader, Transition } from "semantic-ui-react";
 import { Post } from "../components/Post";
-import { AuthContext } from "../context/auth";
+import { useAuthState } from "../context/auth";
 import { useViewpoint } from "../utils/hooks";
 import { PostForm } from "./PostForm";
 import { APIClient } from "../utils/APIClient";
 
 export const Home = (props) => {
   const screen = useViewpoint();
-  const { user } = useContext(AuthContext);
+  const { isAuthenticated } = useAuthState();
 
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -41,7 +41,7 @@ export const Home = (props) => {
       </Grid.Row>
 
       <Grid.Row columns={screen === "mobile" ? 1 : screen === "tablet" ? 2 : 3}>
-        {user && (
+        {isAuthenticated && (
           <Grid.Column style={{ marginBottom: 20 }}>
             {" "}
             <PostForm {...props} />{" "}
