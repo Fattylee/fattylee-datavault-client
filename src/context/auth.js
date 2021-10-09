@@ -48,11 +48,9 @@ const AuthProvider = (props) => {
   useEffect(() => {
     APIClient.get("/auth/me")
       .then(({ data }) => {
-        console.log({ data });
         login(data);
       })
-      .catch((error) => {
-        console.error(error);
+      .catch(() => {
         logout();
       })
       .finally(() => {});

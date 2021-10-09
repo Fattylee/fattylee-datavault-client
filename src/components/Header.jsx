@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu } from "semantic-ui-react";
 import { useAuthState } from "../context/auth";
+import { APIClient } from "../utils/APIClient";
 
 export const Header = () => {
   const { user, loading, logout } = useAuthState();
@@ -13,7 +14,14 @@ export const Header = () => {
   const handleItemClick = (e, { name }) => {
     setActiveItem(name);
   };
-
+  const handleLogout = async () => {
+    try {
+      await APIClient.get("/auth/logout");
+      logout();
+    } catch (error) {
+    } finally {
+    }
+  };
   const authLinks = (
     <Menu pointing size="massive" color="blue">
       <Menu.Item
@@ -27,7 +35,7 @@ export const Header = () => {
       {!loading ? (
         <Menu.Menu position="right">
           <Menu.Item name={user?.firstName} />
-          <Menu.Item name="logout" as={Link} to="/" onClick={logout} />
+          <Menu.Item name="logout" as={Link} to="/" onClick={handleLogout} />
         </Menu.Menu>
       ) : null}
     </Menu>

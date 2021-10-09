@@ -20,7 +20,6 @@ export const Home = (props) => {
         const {
           data: { result },
         } = res;
-        console.log({ result });
         setPosts(result);
       })
       .catch((err) => {
@@ -30,7 +29,6 @@ export const Home = (props) => {
       .finally(() => {
         setLoading(false);
       });
-    return () => {};
   }, []);
 
   if (error) return <h1>Error page</h1>;
