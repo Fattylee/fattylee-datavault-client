@@ -7,7 +7,7 @@ const initialValue = {
   message: "",
 };
 
-export const PostForm = ({ history, refresh }) => {
+export const PostForm = ({ refresh }) => {
   const { setError, error, setValue, value, handleInput } =
     useContext(FormContext);
 

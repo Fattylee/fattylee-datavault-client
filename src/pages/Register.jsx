@@ -12,8 +12,10 @@ const initialValue = {
 };
 
 export const Register = (props) => {
-  const { error, setError, value, setValue, handleSubmit, handleInput } =
-    useForm(initialValue, handleRegisterUser);
+  const { error, setError, value, handleSubmit, handleInput } = useForm(
+    initialValue,
+    handleRegisterUser
+  );
   const [togglePassword, setTogglePassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -26,6 +28,7 @@ export const Register = (props) => {
       lastName: value.lastName,
     })
       .then(() => {
+        setLoading(false);
         props.history.push("/login");
       })
       .catch((error) => {
@@ -35,10 +38,8 @@ export const Register = (props) => {
         ) {
           return setError(error?.response?.data);
         }
-        setError({ error: error.message });
-      })
-      .finally(() => {
         setLoading(false);
+        setError({ error: error.message });
       });
   }
   return (

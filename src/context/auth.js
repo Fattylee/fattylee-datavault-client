@@ -10,10 +10,9 @@ const AuthContext = createContext({
   logout: () => null,
 });
 
-const reducer = (
-  state = { user: null, loading: true, isAuthenticated: false },
-  action
-) => {
+const initialState = { user: null, loading: true, isAuthenticated: false };
+
+const reducer = (state = initialState, action) => {
   switch (action.type) {
     case "LOGIN":
       return {
@@ -29,17 +28,10 @@ const reducer = (
   }
 };
 
-const getInitialState = () => {
-  const initialState = { user: null, loading: true, isAuthenticated: false };
-
-  return initialState;
-};
-
 const AuthProvider = (props) => {
   const [{ user, isAuthenticated, loading }, dispatch] = useReducer(
     reducer,
-    null,
-    getInitialState
+    initialState
   );
 
   const login = (userData) => dispatch({ type: "LOGIN", payload: userData });

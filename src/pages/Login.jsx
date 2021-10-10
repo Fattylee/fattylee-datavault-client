@@ -12,11 +12,13 @@ const initialValue = {
 };
 
 export const Login = (props) => {
-  const { error, setError, value, setValue, handleSubmit, handleInput } =
-    useForm(initialValue, handleLoginUser);
+  const { error, setError, value, handleSubmit, handleInput } = useForm(
+    initialValue,
+    handleLoginUser
+  );
   const [togglePassword, setTogglePassword] = useState(false);
 
-  const context = useAuthState();
+  const { login } = useAuthState();
   const [loading, setLoading] = useState(false);
 
   function handleLoginUser() {
@@ -27,12 +29,11 @@ export const Login = (props) => {
     })
       .then((res) => {
         const { data } = res;
-        setError({});
-        setValue(initialValue);
-        context.login(data);
-        props.history.push("/");
+        setLoading(false);
+        login(data);
       })
       .catch((error) => {
+        setLoading(false);
         if (
           error?.response?.status === 400 ||
           error?.response?.status === 404
@@ -40,11 +41,9 @@ export const Login = (props) => {
           return setError(error?.response?.data);
         }
         setError({ error: error.message });
-      })
-      .finally(() => {
-        setLoading(false);
       });
   }
+
   return (
     <Grid verticalAlign="middle" style={{ height: "70vh" }}>
       <Grid.Column>
@@ -111,5 +110,3 @@ export const Login = (props) => {
     </Grid>
   );
 };
-
-// {"_id":"615edfa0afa6f101f82e9346","email":"fattylee.remod@gmail.com","firstName":"fatai","lastName":"balogun","createdAt":"2021-10-07T11:53:04.571Z","updatedAt":"2021-10-07T11:53:04.571Z","__v":0}
