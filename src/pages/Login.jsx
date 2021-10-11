@@ -91,12 +91,8 @@ export const Login = (props) => {
                 onChange={handleInput}
                 label="Password"
                 required={!!error.password}
-                onClick={(e) => {
-                  console.log(e.target);
-                }}
               />
 
-              {/* <Icon name='eye' */}
               <Form.Button content="Login" fluid size="large" color="green" />
 
               <Message error header="Fix all errors" content={error.error} />

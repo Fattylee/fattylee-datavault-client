@@ -10,25 +10,28 @@ import { NotFound } from "./pages/NotFound";
 import { Register } from "./pages/Register";
 import { FormProvider } from "./context/postForm";
 import { UIContextProvider } from "./context/uiContext";
+import { ActiveLinkProvider } from "./context/activeLink";
 
 const App = () => {
   return (
     <UIContextProvider>
-      <AuthProvider>
-        <FormProvider>
-          <Router>
-            <Container>
-              <Header />
-              <Switch>
-                <Route exact path="/" component={Home} />
-                <AuthRoute exact path="/login" component={Login} />
-                <AuthRoute exact path="/register" component={Register} />
-                <Route component={NotFound} />
-              </Switch>
-            </Container>
-          </Router>
-        </FormProvider>
-      </AuthProvider>
+      <ActiveLinkProvider>
+        <AuthProvider>
+          <FormProvider>
+            <Router>
+              <Container>
+                <Header />
+                <Switch>
+                  <Route exact path="/" component={Home} />
+                  <AuthRoute exact path="/login" component={Login} />
+                  <AuthRoute exact path="/register" component={Register} />
+                  <Route component={NotFound} />
+                </Switch>
+              </Container>
+            </Router>
+          </FormProvider>
+        </AuthProvider>
+      </ActiveLinkProvider>
     </UIContextProvider>
   );
 };

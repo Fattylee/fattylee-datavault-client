@@ -1,19 +1,13 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu } from "semantic-ui-react";
+import { useActiveLink } from "../context/activeLink";
 import { useAuthState } from "../context/auth";
 import { APIClient } from "../utils/APIClient";
 
 export const Header = () => {
   const { user, loading, logout } = useAuthState();
-  const [activeItem, setActiveItem] = useState(() => {
-    const pathname = window.location.pathname;
-    return pathname === "/" ? "dataVault" : pathname.substr(1);
-  });
+  const { handleItemClick, activeItem } = useActiveLink();
 
-  const handleItemClick = (e, { name }) => {
-    setActiveItem(name);
-  };
   const handleLogout = async () => {
     try {
       await APIClient.get("/auth/logout");
